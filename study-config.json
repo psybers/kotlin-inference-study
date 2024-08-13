@@ -498,7 +498,12 @@
                 "kotlin/dupes.csv",
                 "kotlin/mixed-projects.csv"
             ]
-        }
+        },
+	"kotlin/heuristic-analysis-worklist.py": {
+	    "input": [
+		"kotlin/heuristic-identified-calls.csv"
+	    ]
+	}
     },
     "substitutions": [
         {
