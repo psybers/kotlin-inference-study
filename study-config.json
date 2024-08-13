@@ -318,9 +318,9 @@
                 "drop": [
                     0
                 ],
-                "header": "project,file,item,called_method,identified_as",
+                "header": "project,revision,file,item,called_method,identified_as",
                 "test": [
-                    "2,\\.kts?$"
+                    "3,\\.kts?$"
                 ]
             }
         },
