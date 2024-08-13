@@ -83,5 +83,9 @@
   "kotlin/mixed-projects.txt": {
     "job": 103775,
     "sha256": "d29b0590453a732e4b42394f6038789d1516aa6a776ed35972545119e7d2c044"
+  },
+  "kotlin/heuristic-identified-calls.txt": {
+    "job": 109187,
+    "sha256": "edebec12377e1d2216fa6bd692a1c5ba6fed8c7f4a772a82de4ea39bee90b4f5"
   }
 }

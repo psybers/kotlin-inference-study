@@ -1,4 +1,4 @@
-o: output collection[project: string][file: string][item: string][method_called: string] of heuristic_identified_as: string;
+o: output collection[project: string][revision: string][file: string][item: string][method_called: string] of heuristic_identified_as: string;
 
 {@project-method-defns@}
 {@kotlin-default-imports@}
@@ -16,12 +16,15 @@ name_stack: stack of string;
 methodNames: map[string] of set of string;
 missing_file_items: map[string] of set of VarMethod;
 
+head_revision: string;
+
 {@project-filter@}
 {
     {@collect-project-class-methods@}
 
     visit(input, visitor {
             before node: CodeRepository -> {
+                head_revision = getrevision(node, node.head).id;
                 snapshot := getsnapshot(node, "SOURCE_KOTLIN_1_");
                 foreach (i: int; def(snapshot[i]))
                     visit(snapshot[i]);
@@ -76,7 +79,7 @@ missing_file_items: map[string] of set of VarMethod;
                         variableName := join(".", name_stack);
                         calledName := node.initializer.method;
                         if (contains(methodNames[current(ChangedFile).name], calledName)) {
-                            o[input.id][escape(current(ChangedFile).name)][escape(variableName)][escape(calledName)] << project_or_new(node.initializer.method);
+                            o[input.project_url][head_revision][escape(current(ChangedFile).name)][escape(variableName)][escape(calledName)] << project_or_new(node.initializer.method);
                         } else {
                             item: VarMethod = {
                                 variableName,
@@ -99,6 +102,6 @@ foreach (i: int; def(files[i])) {
     foreach (j: int; def(items[j])) {
         item := items[j];
         if (!contains(project_classes, item.method))
-            o[input.id][escape(file)][escape(item.var)][escape(item.method)] << project_or_new(item.method);
+            o[input.project_url][head_revision][escape(file)][escape(item.var)][escape(item.method)] << project_or_new(item.method);
     }
 }
