@@ -10,7 +10,7 @@ o: output collection[project: string][file: string][item: string][method_called:
 type VarMethod = {
     var: string,
     method: string
-}
+};
 
 name_stack: stack of string;
 methodNames: map[string] of set of string;
@@ -76,7 +76,7 @@ missing_file_items: map[string] of set of VarMethod;
                         variableName := join(".", name_stack);
                         calledName := node.initializer.method;
                         if (contains(methodNames[current(ChangedFile).name], calledName)) {
-                            o[input.id][escape(current(ChangedFile).name)][escape(variableName)][escape(called_name)] << project_or_new(node.initializer.method);
+                            o[input.id][escape(current(ChangedFile).name)][escape(variableName)][escape(calledName)] << project_or_new(node.initializer.method);
                         } else {
                             item: VarMethod = {
                                 variableName,
