@@ -310,6 +310,20 @@
                 ]
             }
         },
+        "kotlin/heuristic-identified-calls.txt": {
+            "query": "queries/kotlin/heuristic-identified-calls.boa",
+            "dataset": "kotlin",
+            "csv": {
+                "output": "kotlin/heuristic-identified-calls.csv",
+                "drop": [
+                    0
+                ],
+                "header": "project,file,item,called_method,identified_as",
+                "test": [
+                    "2,\\.kts?$"
+                ]
+            }
+        },
         "java/method-calls-maybe-local.txt": {
             "query": "queries/java/method-calls-maybe-local.boa",
             "dataset": "java",
