@@ -98,5 +98,5 @@ results_df = pd.DataFrame(results).set_index(['Location', 'Inferred?'])
 
 styler = highlight_cols(highlight_rows(get_styler(results_df)))
 
-save_table(styler, 'rq-tests-differences.tex', subdir='kotlin')
+save_table(styler, 'rq-tests-differences.tex', subdir='kotlin', decimals=4)
 

@@ -10,6 +10,8 @@ from common.graphs import setup_plots, save_figure
 from common.local import *
 from common.tables import *
 from matplotlib.ticker import PercentFormatter
+import pandas as pd
+import scipy.stats as stats
 
 summarized = load_pre_summarized('kotlin',
                                  ['project', 'location', 'isval', 'isinferred'])
@@ -87,3 +89,23 @@ styler = highlight_rows(highlight_cols(get_styler(drop_count_if_same(drop_outer_
 save_table(styler, 'rq-mutability-summary.tex', subdir='kotlin')
 
 # %%
+
+
+results = []
+
+for location in ['Local\nVariable', 'Global\nVariable', 'Field']:
+    for inferred in ['Inferred', 'Not Inferred']:
+        result = stats.kruskal(summarized.loc[((summarized.location == location) & (summarized.isinferred == inferred) & (summarized['Is Mutable'] == 'Mutable')), 'percent'],
+                               summarized.loc[((summarized.location == location) & (summarized.isinferred == inferred) & (summarized['Is Mutable'] == 'Not Mutable')), 'percent'])
+        results.append({'Location': location,
+                        'Inferred?': inferred,
+                        'H': result.statistic,
+                        'p': result.pvalue })
+
+results_df = pd.DataFrame(results).set_index(['Location', 'Inferred?'])
+
+styler = highlight_cols(highlight_rows(get_styler(results_df)))
+
+save_table(styler, 'rq-mutability-differences.tex', subdir='kotlin', decimals=4)
+
+
