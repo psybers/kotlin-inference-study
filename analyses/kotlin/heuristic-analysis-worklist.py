@@ -11,7 +11,7 @@ import pandas as pd
 
 df = get_df('heuristic-identified-calls', 'kotlin', header='infer')
 
-df_sampled = df.sample(n=415).reset_index() \
+df_sampled = df.sample(n=430).reset_index() \
     .assign(url = lambda df: df.apply(lambda row: f'{row.project}/blob/{row.revision}/{row.file}', axis='columns'),
             is_a = lambda df: '')\
     [['url', 'item', 'called_method', 'identified_as', 'is_a']]
