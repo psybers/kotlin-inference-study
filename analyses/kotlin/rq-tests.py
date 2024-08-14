@@ -85,15 +85,16 @@ save_table(styler, 'rq-usage-tests.tex', subdir='kotlin')
 
 results = []
 
-
 for location in ['Return\nType', 'Local\nVariable', 'Global\nVariable', 'Lambda\nArgument', 'Field', 'Loop\nVariable']:
-    result = stats.kruskal(summarized.loc[((summarized.location == location) & summarized.is_test), 'percent'],
-                           summarized.loc[((summarized.location == location) & ~summarized.is_test), 'percent'])
-    results.append({'location': location,
-                    'H': result.statistic,
-                    'p': result.pvalue })
+    for inferred in ['Inferred', 'Not Inferred']:
+        result = stats.kruskal(summarized.loc[((summarized.location == location) & (summarized.isinferred == inferred) & summarized.is_test), 'percent'],
+                               summarized.loc[((summarized.location == location) & (summarized.isinferred == inferred) & ~summarized.is_test), 'percent'])
+        results.append({'Location': location,
+                        'Inferred?': inferred,
+                        'H': result.statistic,
+                        'p': result.pvalue })
 
-results_df = pd.DataFrame(results).set_index('location')
+results_df = pd.DataFrame(results).set_index(['Location', 'Inferred?'])
 
 styler = highlight_cols(highlight_rows(get_styler(results_df)))
 
