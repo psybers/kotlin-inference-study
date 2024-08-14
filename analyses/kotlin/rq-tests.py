@@ -13,21 +13,26 @@ from common.df import *
 import pandas as pd
 import matplotlib.ticker as mtick
 
-df_tests = get_df('tests', 'kotlin', header='infer')
+import scipy.stats as stats
+
+df_tests = get_df('tests', 'kotlin', header='infer') \
+    .assign(is_test = True)
 
 df_orig = get_df('basic-usage', 'kotlin', header='infer')
-df = df_tests.merge(df_orig, how='left', on=['project', 'file'])
+df = df_orig.merge(df_tests, how='left', on=['project', 'file'])
+df['is_test'] = df.is_test.fillna(False)
 
-df_totals = df.groupby(['project', 'location'])[['count']].sum().rename(columns={'count':'total'}).reset_index()
+df_totals = df.groupby(['project', 'is_test', 'location'])[['count']].sum().rename(columns={'count':'total'}).reset_index()
 
-df_counted = df.groupby(['project', 'location', 'isinferred'], as_index=False).sum()[['project', 'location', 'isinferred', 'count']]
+df_counted = df.groupby(['project', 'location', 'is_test', 'isinferred'], as_index=False).sum()[['project', 'location', 'isinferred', 'is_test', 'count']]
 
-df_temp = pd.merge(pd.merge(pd.Series(df_counted.project.unique(), name='project'),
-                            pd.Series(df_counted.location.unique(), name='location'), how='cross'),
-                   pd.Series(df_counted.isinferred.unique(),name='isinferred'), how='cross')
+df_temp = pd.merge(pd.merge(pd.merge(pd.Series(df_counted.project.unique(), name='project'),
+                                     pd.Series(df_counted.location.unique(), name='location'), how='cross'),
+                            pd.Series(df_counted.isinferred.unique(),name='isinferred'), how='cross'),
+                   pd.Series(df_counted.is_test.unique(), name='is_test'), how='cross')
 
 df_counted = df_counted.merge(df_temp,
-                              on=['project', 'location', 'isinferred'],
+                              on=['project', 'location', 'isinferred', 'is_test'],
                               how='right') \
                        .fillna(0)
 
@@ -36,7 +41,7 @@ print(df_counted.head())
 
 df_summarized = df_counted.merge(
     df_totals,
-    on=['project', 'location'],
+    on=['project', 'is_test', 'location'],
     how='outer')
 
 print(df_summarized.head())
@@ -57,7 +62,7 @@ sns.boxplot(x='location',
             y='percent',
             hue='isinferred',
             hue_order=['Inferred', 'Not Inferred'],
-            data=summarized,
+            data=summarized.loc[summarized.is_test],
             ax=ax,
             order=location_order,
             showfliers=False)
@@ -71,7 +76,26 @@ save_figure(fig, 'rq-usage-tests.pdf', subdir='kotlin')
 fig
 
 # %% generate the table
-data = summarized[['location', 'isinferred', 'percent']].groupby(['location', 'isinferred']).describe()
+data = summarized.loc[summarized.is_test][['location', 'isinferred', 'percent']].groupby(['location', 'isinferred']).describe()
 styler = highlight_cols(highlight_rows(get_styler(drop_count_if_same(drop_outer_column_index(data)))))
 
 save_table(styler, 'rq-usage-tests.tex', subdir='kotlin')
+
+# %% run ANOVAs
+
+results = []
+
+
+for location in ['Return\nType', 'Local\nVariable', 'Global\nVariable', 'Lambda\nArgument', 'Field', 'Loop\nVariable']:
+    result = stats.kruskal(summarized.loc[((summarized.location == location) & summarized.is_test), 'percent'],
+                           summarized.loc[((summarized.location == location) & ~summarized.is_test), 'percent'])
+    results.append({'location': location,
+                    'H': result.statistic,
+                    'p': result.pvalue })
+
+results_df = pd.DataFrame(results).set_index('location')
+
+styler = highlight_cols(highlight_rows(get_styler(results_df)))
+
+save_table(styler, 'rq-tests-differences.tex', subdir='kotlin')
+
