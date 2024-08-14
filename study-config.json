@@ -503,6 +503,11 @@
 	    "input": [
 		"kotlin/heuristic-identified-calls.csv"
 	    ]
+	},
+	"kotlin/heuristic-analysis.py": {
+	    "input": [
+		"kotlin/heuristic-identified-calls.csv"
+	    ]
 	}
     },
     "substitutions": [
