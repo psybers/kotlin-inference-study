@@ -500,11 +500,13 @@
             ]
         },
 	"kotlin/heuristic-analysis-worklist.py": {
+	    "disabled": true,
 	    "input": [
 		"kotlin/heuristic-identified-calls.csv"
 	    ]
 	},
 	"kotlin/heuristic-analysis.py": {
+	    "disabled": true,
 	    "input": [
 		"kotlin/heuristic-identified-calls.csv"
 	    ]
