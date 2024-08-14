@@ -16,7 +16,7 @@ df_sampled = df.sample(n=430).reset_index() \
             is_a = lambda df: '')\
     [['url', 'item', 'called_method', 'identified_as', 'is_a']]
 
-with pd.ExcelWriter('data/manual-evaluation-incomplete.xlsx') as writer:
+with pd.ExcelWriter('data/manual-evaluation-incomplete.xlsx', engine='xlsxwriter') as writer:
     df_sampled.style \
         .to_excel(writer, sheet_name='ratings', index=False, freeze_panes=(1, 1))
     for column in df_sampled:
