@@ -49,8 +49,8 @@
     "sha256": "3fc187d5970762163f8781dbe4c6942fbccbd1edefdc9ee0c48af670004baf38"
   },
   "java/jdk10-projects.txt": {
-    "job": 101105,
-    "sha256": "7cec88cec7dab942ce15d2ca6871bf8eb884432c3227b9323931700b6b8f5e95"
+    "job": 109188,
+    "sha256": "60490926cb314adf6d43c5e3dadfc37f7b1f47b8b868533dbf26784551ee21de"
   },
   "java/project-size.txt": {
     "job": 102262,
