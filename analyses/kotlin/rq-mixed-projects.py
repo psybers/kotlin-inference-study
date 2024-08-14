@@ -13,6 +13,7 @@ from common.local import *
 from common.tables import *
 from common.df import get_df
 import matplotlib.ticker as mtick
+import scipy.stats as stats
 
 # %%
 
@@ -30,14 +31,15 @@ summarized = load_pre_summarized('kotlin',
 summarized = summarized[summarized.total > 0]
 
 # %%
-df_mixed = get_df('mixed-projects', 'kotlin', header='infer')
+df_mixed = get_df('mixed-projects', 'kotlin', header='infer') \
+    .assign(is_mixed = lambda df: df.java_count > 0)
 
-mixed_count = len(df_mixed.loc[df_mixed.java_count > 0])
+mixed_count = len(df_mixed.loc[df_mixed.is_mixed])
 total_count = len(df_mixed)
 
 print("%.2f%% of projects are mixed" % (100 * (mixed_count / total_count)))
 
-df_mixed = df_mixed[df_mixed.java_count > 0]
+# df_mixed = df_mixed[df_mixed.java_count > 0]
 
 df_mixed_percent = pd.merge(df_mixed, df_file_counts, on='project') \
     .assign(file_count = lambda d: d.java_count.add(d.kotlin_count),
@@ -54,7 +56,7 @@ sns.boxplot(x='location',
             y='percent',
             hue='isinferred',
             hue_order=['Inferred', 'Not Inferred'],
-            data=summarized,
+            data=summarized[summarized.is_mixed],
             ax=ax,
             order=location_order,
             showfliers=False)
@@ -68,7 +70,7 @@ save_figure(fig, 'rq-mixed-projects.pdf', subdir='kotlin')
 fig
 
 # %% generate the table
-data = summarized[['location', 'isinferred', 'percent']].groupby(['location', 'isinferred']).describe()
+data = summarized.loc[summarized.is_mixed][['location', 'isinferred', 'percent']].groupby(['location', 'isinferred']).describe()
 styler = highlight_cols(highlight_rows(get_styler(drop_count_if_same(drop_outer_column_index(data)))))
 
 save_table(styler, 'rq-mixed-projects.tex', subdir='kotlin')
@@ -79,3 +81,24 @@ data = df_mixed_percent[['percent_java']].rename(columns={'percent_java': '% Jav
 styler = highlight_cols(highlight_rows(get_styler(data)))
 
 save_table(styler, 'mixed-projects-distribution.tex', subdir='kotlin')
+
+# %% run the H Test
+
+results = []
+
+for location in ['Return\nType', 'Local\nVariable', 'Global\nVariable', 'Lambda\nArgument', 'Field', 'Loop\nVariable']:
+    for inferred in ['Inferred', 'Not Inferred']:
+        result = stats.kruskal(summarized.loc[((summarized.location == location) & (summarized.isinferred == inferred) & summarized.is_mixed), 'percent'],
+                               summarized.loc[((summarized.location == location) & (summarized.isinferred == inferred) & ~summarized.is_mixed), 'percent'])
+        results.append({'Location': location,
+                        'Inferred?': inferred,
+                        'H': result.statistic,
+                        'p': result.pvalue })
+
+results_df = pd.DataFrame(results).set_index(['Location', 'Inferred?'])
+
+styler = highlight_cols(highlight_rows(get_styler(results_df)))
+
+save_table(styler, 'rq-mixed-differences.tex', subdir='kotlin')
+
+
