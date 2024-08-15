@@ -25,36 +25,36 @@
     "sha256": "d95fc4f418a104b4655852c3fe57cc46380ede7ea6de611b849c0433b866015f"
   },
   "java/counts.txt": {
-    "job": 101157,
-    "sha256": "2f8a5a55482925a5196b92e2a39418e3526c3ad51a26c1dbeb15cdab2e90a3ef"
+    "job": 109194,
+    "sha256": "7b562d363e4beabfcd4d8e66740653e1d8347d379428cdc8a30f3d40a794d9b8"
   },
   "java/determine-rhs-expression-types.txt": {
-    "job": 102499,
-    "sha256": "7d5f1d71de0a389c1226063b3c8b6a6e8a38a8e59196a8043d129829a4cd781f"
+    "job": 109196,
+    "sha256": "709a4944fd00a847c93676e96b4735826b68895cd640b0d6a6720d5543f70827"
   },
   "java/basic-usage.txt": {
-    "job": 101150,
-    "sha256": "4d4bd3d075e8fb1da651f504f9e252bb751960a355ef7e69942f0eaa0dc2b1e6"
+    "job": 109193,
+    "sha256": "6b1bb0ab5babf1f40b9964941fefe0e62e847df6ebfc3a5c7c1ee25ee4e2320f"
   },
   "java/hashes.txt": {
-    "job": 101151,
-    "sha256": "03426cf09fb487f7f9c5fa889892a5c51a54c710de556c54688665eaf7b11de9"
+    "job": 109192,
+    "sha256": "b7cd035a18010f9b750d7fd57cb448cedcc45b9445077396850055b9185ac5f3"
   },
   "java/method-calls-maybe-local.txt": {
-    "job": 101172,
-    "sha256": "a25e6328800cdc8d95a1d690d6268c6a7beabf5d1078e66b75f122e2ae7dc32f"
+    "job": 109197,
+    "sha256": "356cb99ee345d06a984eaaaffadab5ad3de8a2b1f48c7aa28c53b48acfd3664a"
   },
   "java/survival.txt": {
-    "job": 102253,
-    "sha256": "3fc187d5970762163f8781dbe4c6942fbccbd1edefdc9ee0c48af670004baf38"
+    "job": 109195,
+    "sha256": "e2ba530651c7b08103de3e522b4d3a62f7eec8f6c628785975564b1fe1021641"
   },
   "java/jdk10-projects.txt": {
     "job": 109188,
     "sha256": "60490926cb314adf6d43c5e3dadfc37f7b1f47b8b868533dbf26784551ee21de"
   },
   "java/project-size.txt": {
-    "job": 102262,
-    "sha256": "ac3d04e416d5fa0ffd6bc739f5e9ebbbf08e0d60c95f063f156c7d5fddf05fc3"
+    "job": 109189,
+    "sha256": "70e54288b881c4d1a2372196408e15cf6cf26bcd1353127d86ca1305f9654e2b"
   },
   "kotlin/project-size.txt": {
     "job": 102263,
@@ -69,12 +69,12 @@
     "sha256": "0f18ca55d3b60036517f8728c27281a54356b79f74f245c7b61ec362dd025de8"
   },
   "java/stars.txt": {
-    "job": 102284,
-    "sha256": "01a61c1dc80b9b65cd334cd3d303aa8ebc9e49ef76e7b7d64120da0c575be160"
+    "job": 109191,
+    "sha256": "e5bd65b448b20e9cf76a4fc5893cbf3c3ed447fd169f9fe5ed8567590bc3b9ba"
   },
   "java/developer-count.txt": {
-    "job": 102285,
-    "sha256": "ed18403e005ee827208e29ae3ff9d5c5aded03b338ab636e5d710a4cfd32f37a"
+    "job": 109190,
+    "sha256": "66e71936258dc249e4ceb472c4bd0ad132364e036a68d4cb268239e0f00e0710"
   },
   "kotlin/tests.txt": {
     "job": 103767,
