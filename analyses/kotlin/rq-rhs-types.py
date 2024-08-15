@@ -41,8 +41,9 @@ df_inferred = df_inferred.groupby(['project', 'expkind'])['expkind'] \
     .count() \
     .reset_index(name='count')
 
-sums = df_inferred.groupby(['project']) \
+sums = df_inferred.groupby(['project'])[['count']] \
     .sum()
+
 df_inferred['percent'] = df_inferred.apply(lambda x: x['count'] / sums.loc[x.project].iloc[0] * 100,
                                            axis=1)
 
