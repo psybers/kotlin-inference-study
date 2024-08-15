@@ -50,6 +50,9 @@ def download_query(target):
     try:
         with target_path.open(mode='w') as fh:
             fh.write(job.output())
+    except Exception as e:
+        target_path.unlink()
+        raise e
     finally:
         # verifyDownload(target)
         pass
